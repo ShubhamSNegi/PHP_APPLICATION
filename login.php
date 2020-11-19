@@ -14,7 +14,7 @@ if(! $conn )
    $row=mysqli_fetch_assoc($retval);
    $db_email=$row["EMAIL"];
    $db_password=$row["PASSWORD"];
-echo "{$row["EMAIL"]}";
+##echo "{$row["EMAIL"]}";
 $email=$_POST["email"];//receiving name field value in $name variable  
 $password=$_POST["password"];//receiving password field value in $password variable  
 if($email ==$db_email){

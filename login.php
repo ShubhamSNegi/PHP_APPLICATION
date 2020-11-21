@@ -1,33 +1,29 @@
 <?php  
-$host = 'localhost:3306';  
-$user = 'root';  
-$pass = '';  
-$dbname = 'php_application';
-$conn = mysqli_connect($host, $user, $pass,$dbname);  
-if(! $conn )  
-{  
-  die('Could not connect: ' . mysqli_error());  
-}  
-##echo 'Connected successfully';      
-  $sql = 'SELECT EMAIL, PASSWORD FROM login';
-   $retval = mysqli_query($conn, $sql);
-   $row=mysqli_fetch_assoc($retval);
-   $db_email=$row["EMAIL"];
-   $db_password=$row["PASSWORD"];
-##echo "{$row["EMAIL"]}";
-$email=$_POST["email"];//receiving name field value in $name variable  
-$password=$_POST["password"];//receiving password field value in $password variable  
-if($email ==$db_email){
-	if($password==$db_password)
+   require_once ("connection.php");        
+   	if(isset($_POST["email"]) && isset($_POST["password"]))
 	{
-		echo "Success, entered password and email id is correct";
+		$email=mysqli_real_escape_string($conn, $_POST["email"]);  
+   		$password=mysqli_real_escape_string($conn,  $_POST["password"]);
+		$password = password_hash($password, PASSWORD_DEFAULT);
+		$sql = "SELECT  EMAIL, PASSWORD  FROM  login WHERE  EMAIL = '$email' ";
+		$result = mysqli_query($conn, $sql);
+		if(mysqli_num_rows($result) > 0){
+		while($row = mysqli_fetch_assoc($result)) {
+			 if(password_verify( $row["PASSWORD"],$password))  
+                     		{  
+                          			echo "SUCESSFULLY LOGED IN ";
+                     		} 
+			else{
+				echo "Password Incorrect";
+			}
+		}
+		}
+              		else{
+                     		echo "Incorrect Email Id";
+                   		}        		
 	}
 	else{
-		echo"Password Incorrect";
+		echo "No Data Entered";
 	}
-}
-else{
-echo "Email Id Incorrect";
-}
-mysqli_close($conn);  
+	   mysqli_close($conn);  
 ?>    

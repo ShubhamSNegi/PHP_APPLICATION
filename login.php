@@ -14,7 +14,7 @@
                           			echo "SUCESSFULLY LOGED IN ";
                      		} 
 			else{
-				echo "Password Incorrect";
+				echo "Incorrect Password";
 			}
 		}
 		}
